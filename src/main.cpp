@@ -1,19 +1,16 @@
-#include <Arduino.h>
 #include <Adafruit_NAU7802.h>
 
 Adafruit_NAU7802 nau;
 
-
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("Feather ESP32-C6 is alive!");
     Serial.println("NAU7802");
-
     if (!nau.begin())
     {
         Serial.println("Failed to find NAU7802");
-        return;
+        while (1)
+            delay(10); // Don't proceed.
     }
     Serial.println("Found NAU7802");
 
@@ -109,23 +106,18 @@ void setup()
         nau.read();
     }
 
-    while (!nau.calibrate(NAU7802_CALMOD_INTERNAL))
-    {
-        Serial.println("Failed to calibrate internal offset, retrying!");
-        delay(1000);
-    }
-    Serial.println("Calibrated internal offset");
-
-    while (!nau.calibrate(NAU7802_CALMOD_OFFSET))
-    {
-        Serial.println("Failed to calibrate system offset, retrying!");
-        delay(1000);
-    }
-    Serial.println("Calibrated system offset");
+    // SINGLE CHANNEL ONLY!!!
+    // enable use of PGA stabilizer caps (Cfilter) on VIN2
+    nau.setPGACap(true);
 }
 
 void loop()
 {
-    Serial.println("tick");
-    delay(1000);
+    while (!nau.available())
+    {
+        delay(1);
+    }
+    int32_t val = nau.read();
+    Serial.print("Read ");
+    Serial.println(val);
 }
