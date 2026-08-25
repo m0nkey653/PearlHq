@@ -10,8 +10,11 @@ public:
     ~Calibrator() = default;
 
     void ZeroCalibratedReading(DualChannelReadings readings);
+    uint32_t Calculate(DualChannelReadings readings);
 
 private:
+    uint32_t _zeroOffsetChannel0 = 0;
+    uint32_t _zeroOffsetChannel1 = 0;
 };
 
 #endif // CALIBRATOR_H
