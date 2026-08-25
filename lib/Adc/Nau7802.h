@@ -7,24 +7,28 @@
 
 struct DualChannelReadings
 {
-    int32_t channel0;
-    int32_t channel1;
+    uint32_t channel0;
+    uint32_t channel1;
 };
 
 class NauAdc
 {
 public:
     NauAdc();
+    ~NauAdc() = default;
     bool initialize();
     DualChannelReadings getReadings();
 
 private:
     Adafruit_NAU7802 _nau7802;
     bool _initialized = false;
+    uint8_t _sampleSize = 15;
 
-    static std::string getRateString(NAU7802_SampleRate rate);
-    static std::string getLDOString(NAU7802_LDOVoltage ldo);
-    static std::string getGainString(NAU7802_Gain gain);
+    static const char *getRateString(NAU7802_SampleRate rate);
+    static const char *getLDOString(NAU7802_LDOVoltage ldo);
+    static const char *getGainString(NAU7802_Gain gain);
+
+    uint32_t getChannelReading(int channel);
 };
 
 #endif // NAU7802_H

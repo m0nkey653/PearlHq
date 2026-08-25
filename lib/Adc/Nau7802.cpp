@@ -16,26 +16,47 @@ bool NauAdc::initialize()
     // gain 128x
     // rate 320 SPS
 
-    NAU7802_LDOVoltage ldoVoltage = NAU7802_3V0;
-    Serial.print("Nau7802: Setting LDO voltage to 3V");
-    _nau7802.setLDO(ldoVoltage);
-    Serial.print("Nau7802: LDO voltage set to ");
-    Serial.println(NauAdc::getLDOString(ldoVoltage).c_str());
+    Serial.println("Nau7802: Setting LDO voltage to 3V");
+    _nau7802.setLDO(NAU7802_3V0);
+    Serial.printf("Nau7802: LDO voltage set to %s\n", NauAdc::getLDOString(_nau7802.getLDO()));
 
     NAU7802_Gain gain = NAU7802_GAIN_128;
-    Serial.print("Nau7802: Setting gain to 128x");
-    _nau7802.setGain(gain);
-    Serial.print("Nau7802: Gain set to ");
-    Serial.println(NauAdc::getGainString(_nau7802.getGain()).c_str());
+    Serial.println("Nau7802: Setting gain to 128x");
+    _nau7802.setGain(NAU7802_GAIN_128);
+    Serial.printf("Nau7802: Gain set to %s\n", NauAdc::getGainString(_nau7802.getGain()));
 
     NAU7802_SampleRate rate = NAU7802_RATE_320SPS;
-    Serial.print("Nau7802: Setting conversion rate to 320 SPS");
-    _nau7802.setRate(rate);
-    Serial.print("Nau7802: Conversion rate set to ");
-    Serial.println(NauAdc::getRateString(_nau7802.getRate()).c_str());
+    Serial.println("Nau7802: Setting conversion rate to 320 SPS");
+    _nau7802.setRate(NAU7802_RATE_320SPS);
+    Serial.printf("Nau7802: Conversion rate set to %s\n", NauAdc::getRateString(_nau7802.getRate()));
 
     _initialized = true;
     return true;
+}
+
+uint32_t NauAdc::getChannelReading(int channel)
+{
+    _nau7802.setChannel(channel);
+    // Take 10 readings to flush out readings
+    for (uint8_t i = 0; i < 10; i++)
+    {
+        while (!_nau7802.available())
+        {
+            delay(1);
+        }
+        _nau7802.read();
+    }
+    uint32_t reading = 0;
+    for (uint8_t i = 0; i < _sampleSize; i++)
+    {
+        while (!_nau7802.available())
+        {
+            delay(1);
+        }
+        reading += _nau7802.read();
+    }
+    reading /= _sampleSize;
+    return reading;
 }
 
 DualChannelReadings NauAdc::getReadings()
@@ -46,47 +67,13 @@ DualChannelReadings NauAdc::getReadings()
         return DualChannelReadings();
     }
 
-    int32_t chan0, chan1;
-
-    // Switch channel
-    _nau7802.setChannel(0);
-    // Take 10 readings to flush out readings
-    for (uint8_t i = 0; i < 10; i++)
-    {
-        while (!_nau7802.available())
-            delay(1);
-        _nau7802.read();
-    }
-    // Take actual reading
-    while (!_nau7802.available())
-    {
-        delay(1);
-    }
-    chan0 = _nau7802.read();
-
-    //--------------
-    // CHAN 1
-    //--------------
-    // Switch channel
-    _nau7802.setChannel(1);
-    // Take 10 readings to flush out readings
-    for (uint8_t i = 0; i < 10; i++)
-    {
-        while (!_nau7802.available())
-            delay(1);
-        _nau7802.read();
-    }
-    // Take actual reading
-    while (!_nau7802.available())
-    {
-        delay(1);
-    }
-    chan1 = _nau7802.read();
+    uint32_t chan0 = getChannelReading(0);
+    uint32_t chan1 = getChannelReading(1);
 
     return DualChannelReadings{chan0, chan1};
 }
 
-std::string NauAdc::getLDOString(NAU7802_LDOVoltage ldo)
+const char *NauAdc::getLDOString(NAU7802_LDOVoltage ldo)
 {
     switch (ldo)
     {
@@ -113,7 +100,7 @@ std::string NauAdc::getLDOString(NAU7802_LDOVoltage ldo)
     }
 }
 
-std::string NauAdc::getGainString(NAU7802_Gain gain)
+const char *NauAdc::getGainString(NAU7802_Gain gain)
 {
     switch (gain)
     {
@@ -138,7 +125,7 @@ std::string NauAdc::getGainString(NAU7802_Gain gain)
     }
 }
 
-std::string NauAdc::getRateString(NAU7802_SampleRate rate)
+const char *NauAdc::getRateString(NAU7802_SampleRate rate)
 {
     switch (rate)
     {

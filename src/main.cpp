@@ -24,9 +24,7 @@ void setup()
 
 void loop()
 {
-    //--------------
-    // results
-    //--------------
+    // Serial.printf("Button state: %s\n", buttonFlag ? "Pressed" : "Not Pressed");
     if (buttonFlag)
     {
         DualChannelReadings readings = _adc.getReadings();
