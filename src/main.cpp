@@ -36,6 +36,15 @@ void setup()
 
 void loop()
 {
+    if (buttonFlag)
+    {
+        Serial.println("Button pressed! Getting calibrated readings...");
+        DualChannelReadings readings = _adc.getReadings();
+        _calibrator.ZeroCalibratedReading(readings);
+        Serial.printf("Re-calibrated readings: CH0=%d, CH1=%d\n", readings.channel0, readings.channel1);
+        Serial.println("Calibration complete. Press the button to get calibrated readings.");
+    }
+
     if ((millis() - _startMills) >= _intervalLength)
     {
         _startMills = millis();
@@ -50,9 +59,4 @@ void loop()
         delay(1000);        // Delay to avoid flooding the serial output
     }
     // Serial.printf("Waiting for button press... %d\n", _startMills);
-
-    if (buttonFlag)
-    {
-        Serial.println("Button pressed! Getting calibrated readings...");
-    }
 }
