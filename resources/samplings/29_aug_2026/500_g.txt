@@ -1,0 +1,39 @@
+Raw readings: CH0=285755906, CH1=384380
+Calibrated readings: CH0=-88, CH1=109
+Calibrated: 21
+
+Raw readings: CH0=285751837, CH1=572216
+Calibrated readings: CH0=-4157, CH1=187945
+Calibrated: 183788
+Raw readings: CH0=285750449, CH1=576665
+Calibrated readings: CH0=-5545, CH1=192394
+Calibrated: 186849
+Raw readings: CH0=285750481, CH1=576546
+Calibrated readings: CH0=-5513, CH1=192275
+Calibrated: 186762
+Raw readings: CH0=285750166, CH1=582031
+Calibrated readings: CH0=-5828, CH1=197760
+Calibrated: 191932
+Raw readings: CH0=285756024, CH1=385158
+Calibrated readings: CH0=30, CH1=887
+Calibrated: 917
+Raw readings: CH0=285953073, CH1=381625
+Calibrated readings: CH0=197079, CH1=-2646
+Calibrated: 194433
+Raw readings: CH0=285948593, CH1=379636
+Calibrated readings: CH0=192599, CH1=-4635
+Calibrated: 187964
+Raw readings: CH0=285948427, CH1=379649
+Calibrated readings: CH0=192433, CH1=-4622
+Calibrated: 187811
+Raw readings: CH0=285948279, CH1=379491
+Calibrated readings: CH0=192285, CH1=-4780
+Calibrated: 187505
+Raw readings: CH0=285948572, CH1=379641
+Calibrated readings: CH0=192578, CH1=-4630
+Calibrated: 187948
+
+
+500g = 183788
+1g = 367.576
+
