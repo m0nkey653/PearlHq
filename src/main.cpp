@@ -58,5 +58,4 @@ void loop()
         buttonFlag = false; // Reset the flag after handling the button press
         delay(1000);        // Delay to avoid flooding the serial output
     }
-    // Serial.printf("Waiting for button press... %d\n", _startMills);
 }
