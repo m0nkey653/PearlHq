@@ -1,0 +1,33 @@
+services:
+  influxdb:
+    container_name: pearlhq-influxdb
+    image: influxdb:2
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    env_file:
+      - .env
+    ports:
+      - "8086:8086"
+    restart: unless-stopped
+
+  web:
+    container_name: pearlhq-web
+    build:
+      context: ../PearlHqWeb
+      dockerfile: Dockerfile
+    volumes:
+      - web-data:/app/data
+    env_file:
+      - .env
+    environment:
+      - ConnectionStrings__PearlHqDb=Data Source=/app/data/pearlhq.db
+      - Influx__Url=http://influxdb:8086
+    depends_on:
+      - influxdb
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  influxdb-data:
+  web-data:

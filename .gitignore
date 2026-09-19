@@ -21,3 +21,10 @@
 # Secrets / local config (wifi creds, API keys, etc.)
 .env
 secrets.h
+
+# .NET
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
