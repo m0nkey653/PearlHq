@@ -1,0 +1,41 @@
+@model Device
+
+@{
+    ViewData["Title"] = "Device details";
+}
+
+<h1>@Model.Name</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Location)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.Location)</dd>
+</dl>
+
+<h2>Dishes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Empty weight (g)</th>
+            <th>Low threshold (g)</th>
+            <th>Target full weight (g)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var dish in Model.Dishes) {
+        <tr>
+            <td>@dish.Name</td>
+            <td>@dish.Type</td>
+            <td>@dish.EmptyWeightGrams</td>
+            <td>@dish.LowThresholdGrams</td>
+            <td>@dish.TargetFullWeightGrams</td>
+            <td><a asp-controller="Dishes" asp-action="Edit" asp-route-id="@dish.Id">Edit</a></td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>

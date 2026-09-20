@@ -1,8 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model List<(Dish Dish, DishStatusResult Status)>
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Pearl HQ</h1>
+
+@if (!Model.Any())
+{
+    <p>No dishes configured yet. <a asp-controller="Devices" asp-action="Create">Add a device</a> and then <a asp-controller="Dishes" asp-action="Create">a dish</a> to get started.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Dish</th>
+                <th>Device</th>
+                <th>Status</th>
+                <th>Contents (g)</th>
+                <th>Suggested refill (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+@foreach (var (dish, status) in Model) {
+            var badgeClass = status.Status switch
+            {
+                DishStatus.Low => "bg-danger",
+                DishStatus.Ok => "bg-success",
+                _ => "bg-secondary"
+            };
+            <tr>
+                <td>@dish.Name (@dish.Type)</td>
+                <td>@dish.Device.Name</td>
+                <td><span class="badge @badgeClass">@status.Status</span></td>
+                <td>@status.ContentWeightGrams</td>
+                <td>@status.SuggestedRefillGrams</td>
+            </tr>
+}
+        </tbody>
+    </table>
+}

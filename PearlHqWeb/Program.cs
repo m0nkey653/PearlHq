@@ -1,6 +1,7 @@
 using InfluxDB.Client;
 using Microsoft.EntityFrameworkCore;
 using PearlHqWeb.Data;
+using PearlHqWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddSingleton<InfluxDBClient>(sp =>
     var influxOptions = builder.Configuration.GetSection("Influx").Get<InfluxOptions>()!;
     return new InfluxDBClient(influxOptions.Url, influxOptions.Token);
 });
+
+builder.Services.AddScoped<DishStatusService>();
 
 var app = builder.Build();
 

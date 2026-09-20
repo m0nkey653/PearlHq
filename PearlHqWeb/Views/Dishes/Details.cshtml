@@ -1,0 +1,23 @@
+@model Dish
+
+@{
+    ViewData["Title"] = "Dish details";
+}
+
+<h1>@Model.Name</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Type</dt>
+    <dd class="col-sm-9">@Model.Type</dd>
+    <dt class="col-sm-3">Device</dt>
+    <dd class="col-sm-9">@Model.Device.Name</dd>
+    <dt class="col-sm-3">Empty (tare) weight (g)</dt>
+    <dd class="col-sm-9">@Model.EmptyWeightGrams</dd>
+    <dt class="col-sm-3">Low threshold (g)</dt>
+    <dd class="col-sm-9">@Model.LowThresholdGrams</dd>
+    <dt class="col-sm-3">Target full weight (g)</dt>
+    <dd class="col-sm-9">@Model.TargetFullWeightGrams</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to list</a>
