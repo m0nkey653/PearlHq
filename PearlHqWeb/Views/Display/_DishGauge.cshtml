@@ -1,0 +1,37 @@
+@model (Dish Dish, DishStatusResult Status)
+@{
+    var dish = Model.Dish;
+    var status = Model.Status;
+
+    var statusClass = status.Status switch
+    {
+        DishStatus.Low => "low",
+        DishStatus.Ok => "ok",
+        _ => "unknown"
+    };
+
+    double? percent = null;
+    if (status.ContentWeightGrams is { } content && dish.TargetFullWeightGrams is { } target && target > 0)
+    {
+        percent = Math.Clamp(content / target * 100, 0, 100);
+    }
+
+    var heightStyle = percent.HasValue ? $"{percent.Value.ToString("0")}%" : "0%";
+    var percentText = percent.HasValue ? $"{percent.Value:0}%" : "—";
+    var weightText = status.ContentWeightGrams is { } cw ? $"{cw:0} g" : "not calibrated";
+}
+<div class="card">
+    <div class="dish-name">@dish.Name</div>
+    <div class="gauge-track">
+        <div class="gauge-fill @statusClass" style="height: @heightStyle"></div>
+    </div>
+    <div class="percent">@percentText</div>
+    <div class="weight">@weightText</div>
+    <div class="badge @statusClass">@status.Status</div>
+@if (status.Status == DishStatus.Low) {
+    var refillText = status.SuggestedRefillGrams is { } refill
+        ? (dish.Type == DishType.Food ? $"Feed Pearl — add ~{refill:0}g" : $"Refill water — add ~{refill:0}g")
+        : (dish.Type == DishType.Food ? "Pearl needs fed" : "Water is low");
+    <div class="alert">@refillText</div>
+}
+</div>
