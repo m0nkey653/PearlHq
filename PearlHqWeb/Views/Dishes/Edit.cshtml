@@ -33,9 +33,9 @@
         <span asp-validation-for="LowThresholdGrams" class="text-danger"></span>
     </div>
     <div class="form-group mb-3">
-        <label asp-for="TargetFullWeightGrams" class="control-label">Target full weight (g)</label>
-        <input asp-for="TargetFullWeightGrams" class="form-control" />
-        <span asp-validation-for="TargetFullWeightGrams" class="text-danger"></span>
+        <label class="control-label">Target full weight (g)</label>
+        <input value="@Model.TargetFullWeightGrams" class="form-control" readonly disabled />
+        <span class="text-muted">Set by the device's full button — not editable here.</span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="Index" class="btn btn-secondary">Back to list</a>

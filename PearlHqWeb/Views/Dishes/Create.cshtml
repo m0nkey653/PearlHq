@@ -26,12 +26,7 @@
         <input asp-for="LowThresholdGrams" class="form-control" />
         <span asp-validation-for="LowThresholdGrams" class="text-danger"></span>
     </div>
-    <div class="form-group mb-3">
-        <label asp-for="TargetFullWeightGrams" class="control-label">Target full weight (g)</label>
-        <input asp-for="TargetFullWeightGrams" class="form-control" />
-        <span asp-validation-for="TargetFullWeightGrams" class="text-danger"></span>
-    </div>
-    <p class="text-muted">Empty (tare) weight isn't set here — it's reported by the device the first time it tares.</p>
+    <p class="text-muted">Empty (tare) and target full weight aren't set here — they're reported by the device's tare and full buttons.</p>
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Back to list</a>
 </form>

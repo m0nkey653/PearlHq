@@ -38,7 +38,7 @@ public class DishesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Name,Type,DeviceId,LowThresholdGrams,TargetFullWeightGrams")] Dish dish)
+    public async Task<IActionResult> Create([Bind("Name,Type,DeviceId,LowThresholdGrams")] Dish dish)
     {
         if (!ModelState.IsValid)
         {
@@ -64,7 +64,7 @@ public class DishesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,DeviceId,LowThresholdGrams,TargetFullWeightGrams")] Dish dish)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,DeviceId,LowThresholdGrams")] Dish dish)
     {
         if (id != dish.Id) return NotFound();
 
@@ -74,8 +74,9 @@ public class DishesController : Controller
             return View(dish);
         }
 
-        // EmptyWeightGrams is device-owned (set only via a reported tare event), so it's
-        // deliberately excluded from the bound fields above and left untouched here.
+        // EmptyWeightGrams and TargetFullWeightGrams are device-owned (set only via
+        // reported tare/full events), so they're deliberately excluded from the bound
+        // fields above and left untouched here.
         var existing = await _db.Dishes.FindAsync(id);
         if (existing is null) return NotFound();
 
@@ -83,7 +84,6 @@ public class DishesController : Controller
         existing.Type = dish.Type;
         existing.DeviceId = dish.DeviceId;
         existing.LowThresholdGrams = dish.LowThresholdGrams;
-        existing.TargetFullWeightGrams = dish.TargetFullWeightGrams;
 
         await _db.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
